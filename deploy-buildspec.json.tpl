@@ -4,7 +4,7 @@ phases:
     runtime-versions:
       docker: 18
     commands:
-      - rm -rf ./
+      - rm -rf *
       - git config --global credential.helper '!aws codecommit credential-helper $@'
       - git config --global credential.UseHttpPath true
       - git config --global user.email ""
