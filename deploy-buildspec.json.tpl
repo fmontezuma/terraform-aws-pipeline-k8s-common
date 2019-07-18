@@ -14,7 +14,7 @@ phases:
       - echo "helm init --client-only" >> helmscript.sh
       - echo "helm repo add fmontezuma-${helm_repo_env} https://fmontezuma.github.io/helm-chart/${helm_repo_env}/" >> helmscript.sh
       - echo "helm fetch fmontezuma-${helm_repo_env}/k8s-common --untar" >> helmscript.sh
-      - echo "helm template ./k8s-common --output-dir ./k8s-deploy/" >> helmscript.sh
+      - echo "helm template ./k8s-common --values=./devops/helm/values/k8s-common/${k8s_deploy_branch}.yml --output-dir ./k8s-deploy/" >> helmscript.sh
   build:
     commands:
       - rm -rf ./k8s-deploy/k8s-common
@@ -23,4 +23,4 @@ phases:
       - cd k8s-deploy
       - git add --all
       - git commit -m "K8S-COMMON - $${CODEBUILD_RESOLVED_SOURCE_VERSION}"
-      - git push origin $BRANCH
+      - git push origin ${k8s_deploy_branch}
