@@ -22,5 +22,5 @@ phases:
       - rm helmscript.sh
       - cd k8s-deploy
       - git add --all
-      - git commit -m "K8S-COMMON - $${CODEBUILD_RESOLVED_SOURCE_VERSION}"
+      - git commit --allow-empty -m "K8S-COMMON - $${CODEBUILD_RESOLVED_SOURCE_VERSION}"
       - git push origin ${k8s_deploy_branch}
