@@ -10,11 +10,14 @@ phases:
       - git config --global user.email ""
       - git config --global user.name "AWS K8S Common Pipeline"
       - git clone https://git-codecommit.${region}.amazonaws.com/v1/repos/${project_name}-devops
-      - git clone --branch ${k8s_deploy_branch} https://git-codecommit.${region}.amazonaws.com/v1/repos/${project_name}-k8s-deploy
+      - git clone https://git-codecommit.${region}.amazonaws.com/v1/repos/${project_name}-k8s-deploy
+      - cd ${project_name}-k8s-deploy
+      - git checkout ${k8s_deploy_branch} 2>/dev/null || git checkout -b ${k8s_deploy_branch} 
+      - cd ..
       - echo "helm init --client-only" >> helmscript.sh
       - echo "helm repo add fmontezuma-${helm_repo_env} https://fmontezuma.github.io/helm-chart/${helm_repo_env}/" >> helmscript.sh
       - echo "helm fetch fmontezuma-${helm_repo_env}/k8s-common --untar" >> helmscript.sh
-      - echo "helm template ./k8s-common --values=./devops/helm/values/k8s-common/${k8s_deploy_branch}.yml --output-dir ./${project_name}-k8s-deploy/" >> helmscript.sh
+      - echo "helm template ./k8s-common --values=./${project_name}-devops/helm/values/k8s-common/${k8s_deploy_branch}.yml --output-dir ./${project_name}-k8s-deploy/" >> helmscript.sh
   build:
     commands:
       - rm -rf ./${project_name}-k8s-deploy/k8s-common
