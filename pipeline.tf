@@ -2,12 +2,12 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "${format("%.63s", "${data.aws_caller_identity.current.account_id}-pipe-k8s-common-${var.k8s_deploy_branch}")}"
+  bucket = "${format("%.63s", "${data.aws_caller_identity.current.account_id}-pipe-${var.project_name}-k8s-common-${var.k8s_deploy_branch}")}"
   acl    = "private"
 }
 
 resource "aws_codepipeline" "codepipeline" {
-  name     = "k8s-common-${var.k8s_deploy_branch}"
+  name     = "${var.project_name}-k8s-common-${var.k8s_deploy_branch}"
   role_arn = "${var.codepipeline_role_arn}"
 
   artifact_store {

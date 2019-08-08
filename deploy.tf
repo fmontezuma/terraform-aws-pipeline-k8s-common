@@ -1,5 +1,5 @@
 resource "aws_codebuild_project" "deploy" {
-  name          = "k8s-common-deploy-${var.k8s_deploy_branch}"
+  name          = "${var.project_name}-k8s-common-deploy-${var.k8s_deploy_branch}"
   description   = "Deploy process for K8S Common - ${var.k8s_deploy_branch}"
   service_role  = "${var.codebuild_deploy_role_arn}"
 
@@ -19,6 +19,6 @@ resource "aws_codebuild_project" "deploy" {
     type            = "GITHUB"
     location        = "https://github.com/fmontezuma/helm-chart"
     git_clone_depth = 1
-    buildspec = templatefile("${path.module}/deploy-buildspec.json.tpl", { region = data.aws_region.current.name, k8s_deploy_branch = var.k8s_deploy_branch, helm_repo_env = var.helm_repo_env })
+    buildspec = templatefile("${path.module}/deploy-buildspec.json.tpl", { project_name = var.project_name, region = data.aws_region.current.name, k8s_deploy_branch = var.k8s_deploy_branch, helm_repo_env = var.helm_repo_env })
   }
 }
